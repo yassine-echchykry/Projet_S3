@@ -1,6 +1,7 @@
 package com.picalti.beans;
 
-public class UserBean {
+
+public class OwnerBean {
 
     private Long id;
     private String fullName;
@@ -10,7 +11,6 @@ public class UserBean {
     private String email;
     private String password;
     private String tele;
-    
     public Long getId() {
 		return id;
 	}
@@ -60,5 +60,6 @@ public class UserBean {
 		this.tele = tele;
 	}
 	
-    
+
+    // Getters et Setters
 }
