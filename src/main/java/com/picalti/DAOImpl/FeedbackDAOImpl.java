@@ -27,9 +27,10 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
         try {
             connexion = daoFactory.getConnection();
-            String sql = "INSERT INTO Feedback (Comment, Declaration, From_User_Id, To_Owner_Id) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO Feedback (Comment, Declaration, Starts, From_User_Id, To_Owner_Id) VALUES (?, ?, ?, ?, ?)";
             preparedStatement = initRequestPrepare(connexion, sql,
-                    feedback.getComment(), feedback.getDeclaration(), feedback.getFromUserId(), feedback.getToOwnerId());
+                    feedback.getComment(), feedback.getDeclaration(), feedback.getStars(),
+                    feedback.getFromUserId(), feedback.getToOwnerId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<FeedbackBean> userFeedbacks = new ArrayList<>();
+        List<FeedbackBean> fromUserFeedbacks = new ArrayList<>();
 
         try {
             connexion = daoFactory.getConnection();
@@ -54,7 +55,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
             while (resultSet.next()) {
                 FeedbackBean feedbackBean = map(resultSet);
-                userFeedbacks.add(feedbackBean);
+                fromUserFeedbacks.add(feedbackBean);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -62,7 +63,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
             // ClosingAll(resultSet, preparedStatement, connexion);
         }
 
-        return userFeedbacks;
+        return fromUserFeedbacks;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<FeedbackBean> ownerFeedbacks = new ArrayList<>();
+        List<FeedbackBean> toOwnerFeedbacks = new ArrayList<>();
 
         try {
             connexion = daoFactory.getConnection();
@@ -80,7 +81,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
             while (resultSet.next()) {
                 FeedbackBean feedbackBean = map(resultSet);
-                ownerFeedbacks.add(feedbackBean);
+                toOwnerFeedbacks.add(feedbackBean);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -88,7 +89,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
             // ClosingAll(resultSet, preparedStatement, connexion);
         }
 
-        return ownerFeedbacks;
+        return toOwnerFeedbacks;
     }
 
     @Override
@@ -123,6 +124,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
         FeedbackBean feedbackBean = new FeedbackBean();
         feedbackBean.setComment(resultSet.getString("Comment"));
         feedbackBean.setDeclaration(resultSet.getString("Declaration"));
+        feedbackBean.setStars(resultSet.getInt("Starts"));
         feedbackBean.setFromUserId(resultSet.getLong("From_User_Id"));
         feedbackBean.setToOwnerId(resultSet.getLong("To_Owner_Id"));
         return feedbackBean;

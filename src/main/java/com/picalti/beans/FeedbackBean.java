@@ -4,8 +4,9 @@ public class FeedbackBean {
 
     private String comment;
     private String declaration;
-    private Long fromUserId; // ID de l'utilisateur émetteur
-    private Long toOwnerId;
+    private int stars;
+    private Long fromUserId; // ID de l'utilisateur qui donne le feedback
+    private Long toOwnerId; 
     
     public String getComment() {
 		return comment;
@@ -19,6 +20,12 @@ public class FeedbackBean {
 	public void setDeclaration(String declaration) {
 		this.declaration = declaration;
 	}
+	public int getStars() {
+		return stars;
+	}
+	public void setStars(int stars) {
+		this.stars = stars;
+	}
 	public Long getFromUserId() {
 		return fromUserId;
 	}
@@ -31,7 +38,7 @@ public class FeedbackBean {
 	public void setToOwnerId(Long toOwnerId) {
 		this.toOwnerId = toOwnerId;
 	}
-	 // ID du propriétaire destinataire
+	// ID du propriétaire du vélo
 
     // Getters et Setters
 }
