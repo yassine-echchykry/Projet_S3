@@ -69,4 +69,44 @@
     <servlet-name>deletBike</servlet-name>
     <url-pattern>/deletBike</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>createLocation</display-name>
+    <servlet-name>createLocation</servlet-name>
+    <servlet-class>com.picalti.interfaces.createLocation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createLocation</servlet-name>
+    <url-pattern>/createLocation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>allLocations</display-name>
+    <servlet-name>allLocations</servlet-name>
+    <servlet-class>com.picalti.interfaces.allLocations</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>allLocations</servlet-name>
+    <url-pattern>/allLocations</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>updateLocation</display-name>
+    <servlet-name>updateLocation</servlet-name>
+    <servlet-class>com.picalti.interfaces.updateLocation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateLocation</servlet-name>
+    <url-pattern>/updateLocation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>deletLocation</display-name>
+    <servlet-name>deletLocation</servlet-name>
+    <servlet-class>com.picalti.interfaces.deletLocation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deletLocation</servlet-name>
+    <url-pattern>/deletLocation</url-pattern>
+  </servlet-mapping>
 </web-app>
