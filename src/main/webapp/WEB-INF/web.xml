@@ -29,4 +29,24 @@
     <servlet-name>AllUserServlet</servlet-name>
     <url-pattern>/AllUserServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>User_Register_Servlet</display-name>
+    <servlet-name>User_Register_Servlet</servlet-name>
+    <servlet-class>com.picalti.interfaces.User_Register_Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>User_Register_Servlet</servlet-name>
+    <url-pattern>/User_Register_Servlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ghjk</display-name>
+    <servlet-name>ghjk</servlet-name>
+    <servlet-class>com.picalti.interfaces.ghjk</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ghjk</servlet-name>
+    <url-pattern>/ghjk</url-pattern>
+  </servlet-mapping>
 </web-app>
