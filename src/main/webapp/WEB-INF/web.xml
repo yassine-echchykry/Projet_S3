@@ -29,4 +29,44 @@
     <servlet-name>AllUserServlet</servlet-name>
     <url-pattern>/AllUserServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>addBike</display-name>
+    <servlet-name>addBike</servlet-name>
+    <servlet-class>com.picalti.interfaces.addBike</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>addBike</servlet-name>
+    <url-pattern>/addBike</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>allBikes</display-name>
+    <servlet-name>allBikes</servlet-name>
+    <servlet-class>com.picalti.interfaces.allBikes</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>allBikes</servlet-name>
+    <url-pattern>/allBikes</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>updateBike</display-name>
+    <servlet-name>updateBike</servlet-name>
+    <servlet-class>com.picalti.interfaces.updateBike</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateBike</servlet-name>
+    <url-pattern>/updateBike</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>deletBike</display-name>
+    <servlet-name>deletBike</servlet-name>
+    <servlet-class>com.picalti.interfaces.deletBike</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deletBike</servlet-name>
+    <url-pattern>/deletBike</url-pattern>
+  </servlet-mapping>
 </web-app>
