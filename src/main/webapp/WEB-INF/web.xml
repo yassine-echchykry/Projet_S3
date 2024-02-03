@@ -38,6 +38,9 @@
   <servlet-mapping>
     <servlet-name>User_Register_Servlet</servlet-name>
     <url-pattern>/User_Register_Servlet</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <description></description>
     <display-name>addBike</display-name>
     <servlet-name>addBike</servlet-name>
     <servlet-class>com.picalti.interfaces.addBike</servlet-class>
