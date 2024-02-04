@@ -7,6 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.picalti.DAOImpl.BikeDAOImpl;
+import com.picalti.DAOImpl.Session_DAO_Impl;
+import com.picalti.DAOImpl.UserDAOImpl;
+
+
+
 public class DAOFactory {
 
     private static final String FICHIER_PROPERTIES       = "/com/JDBC/DAO/dao.properties";
@@ -67,6 +73,20 @@ public class DAOFactory {
      /* package */ public Connection getConnection() throws SQLException {
         return DriverManager.getConnection( url, username, password );
     }
+
+	public UserDAOImpl getUserDAO() {
+		
+		return new UserDAOImpl(this);
+	}
+
+
+	public BikeDAOImpl getBikeDAO() {
+		return new BikeDAOImpl(this);
+	}
+
+	public Session_DAO_Impl getSessionDAO() {
+		return new Session_DAO_Impl(this);
+	}
 
     /*
      * Méthodes de récupération de l'implémentation des différents DAO (un seul

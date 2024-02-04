@@ -1,5 +1,7 @@
 package com.picalti.DAO;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.JDBC.DAO.DAOException;
@@ -7,17 +9,17 @@ import com.picalti.beans.BikeBean;
 
 public interface BikeDAO {
 
-    void create(BikeBean bike) throws DAOException;
+	public void create(String model,String state,int hourlyPrice,String name,String description,String imagePath,int ownerId,String type,int speed,String station) throws SQLException;
 
     BikeBean findById(Long id) throws DAOException;
 
-    List<BikeBean> findAll() throws DAOException;
+    public ArrayList<BikeBean> all() throws SQLException;
 
-    List<BikeBean> findByOwnerId(Long ownerId) throws DAOException;
+    List<BikeBean> findByOwnerId(int ownerId) throws DAOException;
 
     void update(BikeBean bike) throws DAOException;
 
-    void delete(Long id) throws DAOException;
+    void delete(int id) throws DAOException;
 
     // Autres méthodes nécessaires
 }

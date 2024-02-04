@@ -21,23 +21,28 @@ public class BikeDAOImpl implements BikeDAO {
     }
 
     @Override
-    public void create(BikeBean bike) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+    public void create(String model,String state,int hourlyPrice,String name,String description,String imagePath,int ownerId,String type,int speed,String station) throws SQLException {
+    	Connection conn = daoFactory.getConnection();
+          
+        String SQL = "INSERT INTO Bike (Model, State, Hourly_price, Name, Description, Image_path, Owner_Id, Type, Speed, Station) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = conn.prepareStatement(SQL);
+        
+        statement.setString(1, model);
+		statement.setString(2, state);
+		statement.setInt(3, hourlyPrice);
+		statement.setString(4, name);
+		statement.setString(5, description);
+		statement.setString(6, imagePath);
+		statement.setInt(7, ownerId);
+		statement.setString(8, type);
+		statement.setInt(9, speed);
+		statement.setString(10, station);
+		
+		statement.execute();
+		
+		statement.close();
+		conn.close();
 
-        try {
-            connexion = daoFactory.getConnection();
-            String sql = "INSERT INTO Bike (Model, State, Hourly_price, Name, Description, Image_path, Owner_Id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            preparedStatement = initRequestPrepare(connexion, sql,
-                    bike.getModel(), bike.getState(), bike.getHourlyPrice(), bike.getName(),
-                    bike.getDescription(), bike.getImagePath(), bike.getOwnerId());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(preparedStatement, connexion);
-        }
     }
 
     @Override
@@ -66,11 +71,11 @@ public class BikeDAOImpl implements BikeDAO {
     }
 
     @Override
-    public List<BikeBean> findAll() throws DAOException {
+    public ArrayList<BikeBean> all() throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<BikeBean> allBikes = new ArrayList<>();
+        ArrayList<BikeBean> allBikes = new ArrayList<>();
 
         try {
             connexion = daoFactory.getConnection();
@@ -92,7 +97,7 @@ public class BikeDAOImpl implements BikeDAO {
     }
 
     @Override
-    public List<BikeBean> findByOwnerId(Long ownerId) throws DAOException {
+    public List<BikeBean> findByOwnerId(int ownerId) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -138,7 +143,7 @@ public class BikeDAOImpl implements BikeDAO {
     }
 
     @Override
-    public void delete(Long id) throws DAOException {
+    public void delete(int id) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
 
@@ -159,14 +164,14 @@ public class BikeDAOImpl implements BikeDAO {
 
     private static BikeBean map(ResultSet resultSet) throws SQLException {
         BikeBean bikeBean = new BikeBean();
-        bikeBean.setId(resultSet.getLong("Id"));
+        bikeBean.setId(resultSet.getInt("Id"));
         bikeBean.setModel(resultSet.getString("Model"));
         bikeBean.setState(resultSet.getString("State"));
-        bikeBean.setHourlyPrice(resultSet.getDouble("Hourly_price"));
+        bikeBean.setHourlyPrice(resultSet.getInt("Hourly_price"));
         bikeBean.setName(resultSet.getString("Name"));
         bikeBean.setDescription(resultSet.getString("Description"));
         bikeBean.setImagePath(resultSet.getString("Image_path"));
-        bikeBean.setOwnerId(resultSet.getLong("Owner_Id"));
+        bikeBean.setOwnerId(resultSet.getInt("Owner_Id"));
         return bikeBean;
     }
     private static PreparedStatement initRequestPrepare(Connection connexion, String sql, Object... objects) throws SQLException {

@@ -2,19 +2,23 @@ package com.picalti.beans;
 
 public class BikeBean {
 
-    private Long id;
+    private int id;
     private String model;
     private String state;
-    private Double hourlyPrice;
+    private int hourlyPrice;
     private String name;
     private String description;
     private String imagePath;
-    private Long ownerId;
+    private int ownerId;
+    private String type ;
+    private int speed;
+    private String station;
     
-    public Long getId() {
+    
+    public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getModel() {
@@ -29,10 +33,10 @@ public class BikeBean {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public Double getHourlyPrice() {
+	public int getHourlyPrice() {
 		return hourlyPrice;
 	}
-	public void setHourlyPrice(Double hourlyPrice) {
+	public void setHourlyPrice(int hourlyPrice) {
 		this.hourlyPrice = hourlyPrice;
 	}
 	public String getName() {
@@ -53,11 +57,30 @@ public class BikeBean {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	public Long getOwnerId() {
+	public int getOwnerId() {
 		return ownerId;
 	}
-	public void setOwnerId(Long ownerId) {
+	public void setOwnerId(int ownerId) {
 		this.ownerId = ownerId;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getSpeed() {
+		return speed;
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	public String getStation() {
+		return station;
+	}
+	public void setStation(String station) {
+		this.station = station;
 	}
 	 // ID du propriétaire associé
 

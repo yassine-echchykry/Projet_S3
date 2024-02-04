@@ -14,6 +14,9 @@ import com.picalti.DAO.userDAO;
 import com.picalti.beans.UserBean;
 
 
+
+
+
 //... (Autres imports)
 
 public class UserDAOImpl implements userDAO {
@@ -25,27 +28,61 @@ public class UserDAOImpl implements userDAO {
  }
 
  @Override
- public void create(UserBean user) throws DAOException {
-     Connection connexion = null;
-     PreparedStatement preparedStatement = null;
+ public void register(String fullName, String cin, Integer age, String sexe, String email, String password, String tele) throws SQLException {
+     Connection connexion = daoFactory.getConnection();
+     String SQL = "INSERT INTO User (Full_name, CIN, Age, Sexe, Email, Password, Tele) VALUES (?, ?, ?, ?, ?, ?, ?)";
+     PreparedStatement statement = connexion.prepareStatement(SQL);
+
+     statement.setString(1, fullName);
+     statement.setString(2, cin);
+     statement.setInt(3, age);  // Use setInt instead of setString for Integer
+     statement.setString(4, sexe);
+     statement.setString(5, email);
+     statement.setString(6, password);
+     statement.setString(7, tele);
 
      try {
-         connexion = daoFactory.getConnection();
-         String sql = "INSERT INTO User (Full_name, CIN, Age, Sexe, Email, Password, Tele) VALUES (?, ?, ?, ?, ?, ?, ?)";
-         preparedStatement = initRequestPrepare(connexion, sql,
-                 user.getFullName(), user.getCin(), user.getAge(), user.getSexe(), user.getEmail(),
-                 user.getPassword(), user.getTele());
-
-         preparedStatement.executeUpdate();
-     } catch (SQLException e) {
-         throw new DAOException(e);
+         statement.execute();
      } finally {
-         // ClosingAll(preparedStatement, connexion);
+         statement.close();
+         connexion.close();
      }
  }
+ 
+ private static UserBean getBean(ResultSet res) throws SQLException {
+ 	UserBean bean = new UserBean();
+ 	
+ 	bean.setId(res.getInt("id"));
+ 	bean.setFullName(res.getString("name"));
+ 	
+ 	bean.setEmail(res.getString("email"));
+ 	
+ 	return bean;
+ }
+ 
+ public UserBean login(String email, String password) throws SQLException {
+ 	Connection conn = daoFactory.getConnection();
+ 	String SQL = "SELECT * FROM users WHERE email = ? AND password = ?;";
+ 	PreparedStatement statement = conn.prepareStatement(SQL);
+ 	
+ 	statement.setString(1, email);
+ 	statement.setString(2, password);
+ 	
+ 	ResultSet res = statement.executeQuery();
+ 	UserBean bean = res.next() ? getBean(res) : null;
+ 	
+ 	res.close();
+ 	statement.close();
+ 	conn.close();
+ 	
+ 	return bean;
+ }
+ 
+ 
+
 
  @Override
- public UserBean findById(Long id) throws DAOException {
+ public UserBean findById(int id) throws DAOException {
      Connection connexion = null;
      PreparedStatement preparedStatement = null;
      ResultSet resultSet = null;
@@ -124,7 +161,7 @@ public class UserDAOImpl implements userDAO {
 
  private static UserBean map(ResultSet resultSet) throws SQLException {
      UserBean userBean = new UserBean();
-     userBean.setId(resultSet.getLong("Id"));
+     userBean.setId(resultSet.getInt("Id"));
      userBean.setFullName(resultSet.getString("Full_name"));
      userBean.setCin(resultSet.getString("CIN"));
      userBean.setAge(resultSet.getInt("Age"));

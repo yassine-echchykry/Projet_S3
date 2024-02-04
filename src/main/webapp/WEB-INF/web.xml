@@ -39,7 +39,7 @@
     <servlet-name>User_Register_Servlet</servlet-name>
     <url-pattern>/User_Register_Servlet</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>addBike</display-name>
     <servlet-name>addBike</servlet-name>
@@ -118,5 +118,25 @@
   <servlet-mapping>
     <servlet-name>deletLocation</servlet-name>
     <url-pattern>/deletLocation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>User_Login_Servlet</display-name>
+    <servlet-name>User_Login_Servlet</servlet-name>
+    <servlet-class>com.picalti.interfaces.User_Login_Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>User_Login_Servlet</servlet-name>
+    <url-pattern>/User_Login_Servlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>User_Infos_Servlet</display-name>
+    <servlet-name>User_Infos_Servlet</servlet-name>
+    <servlet-class>com.picalti.interfaces.User_Infos_Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>User_Infos_Servlet</servlet-name>
+    <url-pattern>/User_Infos_Servlet</url-pattern>
   </servlet-mapping>
 </web-app>
