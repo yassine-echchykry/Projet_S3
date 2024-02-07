@@ -53,9 +53,9 @@ public class addBike extends HttpServlet {
 	    String jsonString = requestBody.toString();
 	    System.out.printf("Name: %s%n", jsonString);
 
-	    String model = getValueFromJsonString(jsonString, "authToken");
-	    String state = getValueFromJsonString(jsonString, "title");
-	    String hourlyPrice = getValueFromJsonString(jsonString, "description");
+	    String model = getValueFromJsonString(jsonString, "model");
+	    String state = getValueFromJsonString(jsonString, "state");
+	    String hourlyPrice = getValueFromJsonString(jsonString, "hourlyPrice");
 	    String name = getValueFromJsonString(jsonString, "name");
 	    String description = getValueFromJsonString(jsonString, "description");
 	    String imagePath = getValueFromJsonString(jsonString, "imagePath");
@@ -74,16 +74,6 @@ public class addBike extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	   
-
-	    // Read the file content into a string (you may want to convert it to Base64)
-	   
-
-	   
-
-	    // Your further processing logic here...
-
 	    
 	        // Perform any necessary backend logic with the received data
 	        response.setContentType("application/json");
@@ -95,9 +85,6 @@ public class addBike extends HttpServlet {
 	    
 	}
 
-    
-        
-    
 	private String getValueFromJsonString(String jsonString, String key) {
         int startIndex = jsonString.indexOf("\"" + key + "\":") + key.length() + 3; // 3 accounts for ": and optional space
         int endIndex = jsonString.indexOf(",", startIndex);

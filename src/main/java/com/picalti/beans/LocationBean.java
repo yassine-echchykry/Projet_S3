@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class LocationBean {
-	private Long id;
+	private int id;
     private Date dateD;
     private Date dateF;
     private Time hourD;
@@ -12,15 +12,23 @@ public class LocationBean {
     private Double cost;
     private String etatD;
     private String etatF;
-    private Long userId; // ID de l'utilisateur associé
-    private Long stationSId; // ID de la station de départ
-    private Long stationFId; // ID de la station d'arrivée
-    private Long bikeId;
-    // ID du vélo associé
-    public Long getId() {
+    private int userId; // ID de l'utilisateur associé
+    private int stationSId; // ID de la station de départ
+    private int stationFId; // ID de la station d'arrivée
+    private int bikeId;
+    private String code;
+    
+    public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	// ID du vélo associé
+    public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public Date getDateD() {
@@ -65,28 +73,28 @@ public class LocationBean {
 	public void setEtatF(String etatF) {
 		this.etatF = etatF;
 	}
-	public Long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
-	public void setUserId(Long userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public Long getStationSId() {
+	public int getStationSId() {
 		return stationSId;
 	}
-	public void setStationSId(Long stationSId) {
+	public void setStationSId(int stationSId) {
 		this.stationSId = stationSId;
 	}
-	public Long getStationFId() {
+	public int getStationFId() {
 		return stationFId;
 	}
-	public void setStationFId(Long stationFId) {
+	public void setStationFId(int stationFId) {
 		this.stationFId = stationFId;
 	}
-	public Long getBikeId() {
+	public int getBikeId() {
 		return bikeId;
 	}
-	public void setBikeId(Long bikeId) {
+	public void setBikeId(int bikeId) {
 		this.bikeId = bikeId;
 	}
 	

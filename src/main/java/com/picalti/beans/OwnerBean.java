@@ -3,7 +3,7 @@ package com.picalti.beans;
 
 public class OwnerBean {
 
-    private Long id;
+    private int id;
     private String fullName;
     private String cin;
     private Integer age;
@@ -11,10 +11,10 @@ public class OwnerBean {
     private String email;
     private String password;
     private String tele;
-    public Long getId() {
+    public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getFullName() {

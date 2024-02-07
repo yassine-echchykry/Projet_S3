@@ -7,8 +7,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.picalti.DAO.LocationDAO;
 import com.picalti.DAOImpl.BikeDAOImpl;
+import com.picalti.DAOImpl.LocationDAOImpl;
+import com.picalti.DAOImpl.OwnerDAOImpl;
 import com.picalti.DAOImpl.Session_DAO_Impl;
+import com.picalti.DAOImpl.SoldeDAOImpl;
+import com.picalti.DAOImpl.TempSoldeDAOImpl;
 import com.picalti.DAOImpl.UserDAOImpl;
 
 
@@ -86,6 +91,22 @@ public class DAOFactory {
 
 	public Session_DAO_Impl getSessionDAO() {
 		return new Session_DAO_Impl(this);
+	}
+
+	public OwnerDAOImpl getOwnerDAO() {
+		return new OwnerDAOImpl(this);
+	}
+
+	public SoldeDAOImpl getSoldeDAO() {
+		return new SoldeDAOImpl(this);
+	}
+
+	public TempSoldeDAOImpl getTempSoldeDAO() {
+		return new TempSoldeDAOImpl(this);
+	}
+
+	public LocationDAOImpl getLocationDAO() {
+		return new LocationDAOImpl(this);
 	}
 
     /*

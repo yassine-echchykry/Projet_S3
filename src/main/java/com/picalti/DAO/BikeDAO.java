@@ -11,7 +11,7 @@ public interface BikeDAO {
 
 	public void create(String model,String state,int hourlyPrice,String name,String description,String imagePath,int ownerId,String type,int speed,String station) throws SQLException;
 
-    BikeBean findById(Long id) throws DAOException;
+    BikeBean findById(int id) throws DAOException;
 
     public ArrayList<BikeBean> all() throws SQLException;
 

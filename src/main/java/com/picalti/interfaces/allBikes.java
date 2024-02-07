@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.JDBC.DAO.DAOFactory;
-
+import com.fasterxml.jackson.databind.*;
 import com.JDBC.DAO.DAOException;
 import com.JDBC.DAO.DAOFactory;
 import com.picalti.beans.BikeBean;
-
+import com.picalti.beans.OwnerBean;
 
 
 import com.picalti.DAO.BikeDAO;
-import com.picalti.DAOImpl.BikeDAOImpl;
+import com.picalti.DAOImpl.*;
 /**
  * Servlet implementation class allBikes
  */
@@ -29,67 +29,69 @@ public class allBikes extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private BikeDAOImpl bikeDAO;
+	private OwnerDAOImpl ownerDAO;
 	
 	
 	public void init() throws ServletException {
-	    System.out.println("Init method called!");  // Ajoutez cette ligne pour le débogage
 	    DAOFactory daoFactory = DAOFactory.getInstance();
 	    this.bikeDAO = daoFactory.getBikeDAO();
+	    this.ownerDAO = daoFactory.getOwnerDAO();
 	   
 	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    try {
+	        // Code qui peut lever une exception (mais pas nécessairement une SQLException)
+	        // ...
+	        
+	        ArrayList<BikeBean> bikes = bikeDAO.all();
+
+	        // Set the content type of the response
+	        response.setContentType("application/json");
+
+	        // Get the PrintWriter object to write the response
+	        PrintWriter out = response.getWriter();
+
+	        out.print("[");
+
+	        // Iterate through bikes and generate JSON objects
+	        for (int i = 0; i < bikes.size(); i++) {
+	            BikeBean bike = bikes.get(i);
+	            
+	            OwnerBean owner = ownerDAO.findById(bike.getOwnerId());
+                String owner_name=owner.getFullName();
+
+	            out.print("{");
+	            out.print("\"id\": " + bike.getId() + ",");
+	            out.print("\"model\": \"" + bike.getModel() + "\",");
+	            out.print("\"state\": \"" + bike.getState() + "\",");
+	            out.print("\"hourlyPrice\": " + bike.getHourlyPrice() + ",");
+	            out.print("\"name\": \"" + bike.getName() + "\",");
+	            out.print("\"description\": \"" + bike.getDescription() + "\",");
+	            out.print("\"imagePath\": \"" + bike.getImagePath() + "\",");
+	            out.print("\"owner\": " + owner_name + ",");
+	            out.print("\"type\": \"" + bike.getType() + "\",");
+	            out.print("\"speed\": " + bike.getSpeed() + ",");
+	            out.print("\"station\": \"" + bike.getStation() + "\"");
+	            out.print("}");
+	            System.out.println("type: " + bike.getType());
+
+	            // Add a comma if it's not the last element
+	            if (i < bikes.size() - 1) {
+	                out.print(",");
+	            }
+	        }
+
+	        out.print("]");
+
+	        out.flush();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching bikes");
+	    }
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		response.setHeader("Access-Control-Allow-Origin", "*");
-    	response.setHeader("Access-Control-Allow-Methods", "POST");
-    	response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    	System.out.println("Naaaaah");
-    	
-    	try {
-            // Retrieve all posts from the database
-            ArrayList<BikeBean> bikes = bikeDAO.all();
-           
-
-            // Set the content type of the response
-            response.setContentType("application/json");
-
-            // Get the PrintWriter object to write the response
-            PrintWriter out = response.getWriter();
-
-         // Write the JSON response manually (without using Gson)
-            out.print("[");
-            for (int i = 0; i < bikes.size(); i++) {
-                BikeBean post = bikes.get(i);
-                
-                User_Bean user = userDAO.getUserById(post.getUserID());
-                String user1=user.getName();
-                out.print("{");
-                out.print("\"id\": " + post.getID() + ",");
-                out.print("\"userId\": " + post.getUserID() + ",");
-                out.print("\"title\": \"" + post.getTitle() + "\",");
-                out.print("\"auther\": \"" + user1  + "\",");
-                out.print("\"description\": \"" + post.getDescription() + "\",");
-                out.print("\"img\": \"" + post.getImage() + "\",");
-                out.print("\"date\": \"" + post.getDate() + "\"");
-                out.print("}");
-                
-                // Add a comma if it's not the last element
-                if (i < posts.size() - 1) {
-                    out.print(",");
-                }
-                
-            }
-            out.print("]");
-
-            out.flush();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching posts");
-        }
-    }
 }

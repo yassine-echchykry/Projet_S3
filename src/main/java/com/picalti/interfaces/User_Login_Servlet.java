@@ -37,14 +37,7 @@ public class User_Login_Servlet extends HttpServlet {
 	} 
        
     
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -63,7 +56,7 @@ public class User_Login_Servlet extends HttpServlet {
         // Parse JSON data
         String jsonString = requestBody.toString();
         
-        System.out.printf("Name: %s%n", jsonString);
+        System.out.printf("Data: %s%n", jsonString);
 
         String email = getValueFromJsonString(jsonString, "email");
         String password = getValueFromJsonString(jsonString, "password");
@@ -77,14 +70,18 @@ public class User_Login_Servlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
+        	
 			UserBean userBean = userDAO.login(email, password);
 			
 			if(userBean == null) {
 				request.setAttribute("form_error", "Unvalid credentails");
             
 				return;
+				
 			}
 			String token = generateToken();
+		
+			System.out.println("token: " + token);
 			response.setContentType("text/plain"); // Set the content type to plain text
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(token);

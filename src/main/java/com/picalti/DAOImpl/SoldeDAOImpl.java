@@ -1,9 +1,11 @@
 package com.picalti.DAOImpl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,26 +23,40 @@ public class SoldeDAOImpl implements SoldeDAO {
     }
 
     @Override
-    public void create(SoldeBean solde) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            connexion = daoFactory.getConnection();
+    public void create(int amount,Date updateDate,int userId) throws DAOException, SQLException {
+    	
+    	    Connection conn = daoFactory.getConnection();
             String sql = "INSERT INTO Solde (Amount, Update_date, User_Id) VALUES (?, ?, ?)";
-            preparedStatement = initRequestPrepare(connexion, sql,
-                    solde.getAmount(), solde.getUpdateDate(), solde.getUserId());
+            PreparedStatement statement = conn.prepareStatement(sql);
+            
+            statement.setInt(1, amount);
+            statement.setDate(2, updateDate);
+    		statement.setInt(3, userId);
+    		
+    		statement.execute();
+    		
+    		statement.close();
+    		conn.close();
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(preparedStatement, connexion);
         }
+    
+    public void updateAmount(int amount, int userId) throws DAOException, SQLException {
+        Connection conn = daoFactory.getConnection();
+        String sql = "UPDATE Solde SET Amount = Amount + ? WHERE User_Id = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+
+        statement.setInt(1, amount);
+        statement.setInt(2, userId);
+
+        statement.executeUpdate();
+
+        statement.close();
+        conn.close();
     }
 
+
     @Override
-    public SoldeBean findById(Long id) throws DAOException {
+    public SoldeBean findById(int id) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -64,12 +80,13 @@ public class SoldeDAOImpl implements SoldeDAO {
         return soldeBean;
     }
 
+ 
     @Override
-    public List<SoldeBean> findByUserId(Long userId) throws DAOException {
+    public SoldeBean findByUserId(int userId) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<SoldeBean> userSoldes = new ArrayList<>();
+        SoldeBean soldeBean = null;
 
         try {
             connexion = daoFactory.getConnection();
@@ -77,18 +94,18 @@ public class SoldeDAOImpl implements SoldeDAO {
             preparedStatement = initRequestPrepare(connexion, sql, userId);
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                SoldeBean soldeBean = map(resultSet);
-                userSoldes.add(soldeBean);
+            if (resultSet.next()) {
+                soldeBean = map(resultSet);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            // ClosingAll(resultSet, preparedStatement, connexion);
+            // Fermez les ressources (resultSet, preparedStatement, connexion) ici
         }
 
-        return userSoldes;
+        return soldeBean;
     }
+
 
     @Override
     public List<SoldeBean> findAll() throws DAOException {
@@ -157,10 +174,10 @@ public class SoldeDAOImpl implements SoldeDAO {
 
     private static SoldeBean map(ResultSet resultSet) throws SQLException {
         SoldeBean soldeBean = new SoldeBean();
-        soldeBean.setId(resultSet.getLong("Id"));
-        soldeBean.setAmount(resultSet.getDouble("Amount"));
+        soldeBean.setId(resultSet.getInt("Id"));
+        soldeBean.setAmount(resultSet.getInt("Amount"));
         soldeBean.setUpdateDate(resultSet.getDate("Update_date"));
-        soldeBean.setUserId(resultSet.getLong("User_Id"));
+        soldeBean.setUserId(resultSet.getInt("User_Id"));
         return soldeBean;
     }
 

@@ -4,21 +4,21 @@ import java.sql.Date;
 
 public class SoldeBean {
 
-    private Long id;
-    private Double amount;
+    private int id;
+    private int amount;
     private Date updateDate;
-    private Long userId;
+    private int userId;
     
-    public Long getId() {
+    public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public Double getAmount() {
+	public int getAmount() {
 		return amount;
 	}
-	public void setAmount(Double amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	public Date getUpdateDate() {
@@ -27,10 +27,10 @@ public class SoldeBean {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	public Long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
-	public void setUserId(Long userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 	 // ID de l'utilisateur associé

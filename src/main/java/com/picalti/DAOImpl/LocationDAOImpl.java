@@ -1,9 +1,11 @@
 package com.picalti.DAOImpl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,24 +23,25 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     @Override
-    public void create(LocationBean location) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+    public void create(String dateD,String hourD,String hourF,String etatD,int userId,int stationSId,int bikeId,String code) throws SQLException {
+    	Connection conn = daoFactory.getConnection();
 
-        try {
-            connexion = daoFactory.getConnection();
-            String sql = "INSERT INTO Location (DateD, DateF, HourD, HourF, Cost, EtatD, EtatF, User_Id, StationS_Id, StationF_Id, Bike_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            preparedStatement = initRequestPrepare(connexion, sql,
-                    location.getDateD(), location.getDateF(), location.getHourD(), location.getHourF(),
-                    location.getCost(), location.getEtatD(), location.getEtatF(),
-                    location.getUserId(), location.getStationSId(), location.getStationFId(), location.getBikeId());
+    	String sql = "INSERT INTO Location (DateD, HourD, HourF, EtatD, User_Id, StationF_Id, Bike_Id, code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    	PreparedStatement statement = conn.prepareStatement(sql);
+    	statement.setString(1, dateD);
+    	statement.setString(2, hourD);
+    	statement.setString(3, hourF);
+    	statement.setString(4, etatD);
+    	statement.setInt(5, userId);
+    	statement.setInt(6, stationSId);
+    	statement.setInt(7, bikeId);
+    	statement.setString(8, code);
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(preparedStatement, connexion);
-        }
+    		
+    		statement.execute();
+    		
+    		statement.close();
+    		conn.close();
     }
 
     @Override
@@ -67,7 +70,7 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     @Override
-    public List<LocationBean> findByUserId(Long userId) throws DAOException {
+    public List<LocationBean> findByUserId(int userId) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -92,60 +95,10 @@ public class LocationDAOImpl implements LocationDAO {
         return userLocations;
     }
 
-    @Override
-    public List<LocationBean> findByStationSId(Long stationSId) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<LocationBean> stationSLocations = new ArrayList<>();
-
-        try {
-            connexion = daoFactory.getConnection();
-            String sql = "SELECT * FROM Location WHERE StationS_Id = ?";
-            preparedStatement = initRequestPrepare(connexion, sql, stationSId);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                LocationBean locationBean = map(resultSet);
-                stationSLocations.add(locationBean);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(resultSet, preparedStatement, connexion);
-        }
-
-        return stationSLocations;
-    }
+    
 
     @Override
-    public List<LocationBean> findByStationFId(Long stationFId) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<LocationBean> stationFLocations = new ArrayList<>();
-
-        try {
-            connexion = daoFactory.getConnection();
-            String sql = "SELECT * FROM Location WHERE StationF_Id = ?";
-            preparedStatement = initRequestPrepare(connexion, sql, stationFId);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                LocationBean locationBean = map(resultSet);
-                stationFLocations.add(locationBean);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(resultSet, preparedStatement, connexion);
-        }
-
-        return stationFLocations;
-    }
-
-    @Override
-    public List<LocationBean> findByBikeId(Long bikeId) throws DAOException {
+    public List<LocationBean> findByBikeId(int bikeId) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -196,27 +149,6 @@ public class LocationDAOImpl implements LocationDAO {
         return allLocations;
     }
 
-    @Override
-    public void update(LocationBean location) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            connexion = daoFactory.getConnection();
-            String sql = "UPDATE Location SET DateD=?, DateF=?, HourD=?, HourF=?, Cost=?, EtatD=?, EtatF=?, User_Id=?, StationS_Id=?, StationF_Id=?, Bike_Id=? WHERE Id=?";
-            preparedStatement = initRequestPrepare(connexion, sql,
-                    location.getDateD(), location.getDateF(), location.getHourD(), location.getHourF(),
-                    location.getCost(), location.getEtatD(), location.getEtatF(),
-                    location.getUserId(), location.getStationSId(), location.getStationFId(), location.getBikeId(),
-                    location.getId());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            // ClosingAll(preparedStatement, connexion);
-        }
-    }
 
     @Override
     public void delete(Long id) throws DAOException {
@@ -240,18 +172,18 @@ public class LocationDAOImpl implements LocationDAO {
 
     private static LocationBean map(ResultSet resultSet) throws SQLException {
         LocationBean locationBean = new LocationBean();
-        locationBean.setId(resultSet.getLong("Id"));
+        locationBean.setId(resultSet.getInt("Id"));
         locationBean.setDateD(resultSet.getDate("DateD"));
         locationBean.setDateF(resultSet.getDate("DateF"));
         locationBean.setHourD(resultSet.getTime("HourD"));
         locationBean.setHourF(resultSet.getTime("HourF"));
-        locationBean.setCost(resultSet.getDouble("Cost"));
         locationBean.setEtatD(resultSet.getString("EtatD"));
         locationBean.setEtatF(resultSet.getString("EtatF"));
-        locationBean.setUserId(resultSet.getLong("User_Id"));
-        locationBean.setStationSId(resultSet.getLong("StationS_Id"));
-        locationBean.setStationFId(resultSet.getLong("StationF_Id"));
-        locationBean.setBikeId(resultSet.getLong("Bike_Id"));
+        locationBean.setUserId(resultSet.getInt("User_Id"));
+        locationBean.setStationSId(resultSet.getInt("StationS_Id"));
+        locationBean.setStationFId(resultSet.getInt("StationF_Id"));
+        locationBean.setBikeId(resultSet.getInt("Bike_Id"));
+        locationBean.setCode(resultSet.getString("code"));
         return locationBean;
     }
 

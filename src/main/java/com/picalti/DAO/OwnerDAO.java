@@ -1,16 +1,20 @@
 package com.picalti.DAO;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.JDBC.DAO.DAOException;
 import com.picalti.beans.OwnerBean;
+import com.picalti.beans.UserBean;
 
 public interface OwnerDAO {
 
-    void create(OwnerBean owner) throws DAOException;
+    void register(String fullName, String cin, Integer age, String sexe, String email, String password, String tele) throws SQLException;
+    
+    public UserBean login(String email, String password) throws SQLException;
 
-    OwnerBean findById(Long id) throws DAOException;
+    OwnerBean findById(int id) throws DAOException;
 
     OwnerBean findByEmail(String email) throws DAOException;
 

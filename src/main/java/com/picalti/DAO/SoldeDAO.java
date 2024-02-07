@@ -1,5 +1,7 @@
 package com.picalti.DAO;
 
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.JDBC.DAO.DAOException;
@@ -7,11 +9,13 @@ import com.picalti.beans.SoldeBean;
 
 public interface SoldeDAO {
 
-    void create(SoldeBean solde) throws DAOException;
+    void create(int amount,Date updateDate,int userId) throws SQLException;
+    
+    public void updateAmount(int amount, int userId) throws SQLException;
 
-    SoldeBean findById(Long id) throws DAOException;
+    SoldeBean findById(int id) throws DAOException;
 
-    List<SoldeBean> findByUserId(Long userId) throws DAOException;
+    SoldeBean findByUserId(int userId) throws DAOException;
 
     List<SoldeBean> findAll() throws DAOException;
 

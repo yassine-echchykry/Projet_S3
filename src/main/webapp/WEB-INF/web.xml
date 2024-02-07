@@ -139,4 +139,53 @@
     <servlet-name>User_Infos_Servlet</servlet-name>
     <url-pattern>/User_Infos_Servlet</url-pattern>
   </servlet-mapping>
+  <filter>
+    <display-name>CORSFilter</display-name>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>com.picalti.filters.CORSFilter.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/CORSFilter</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddSoldeServlet</display-name>
+    <servlet-name>AddSoldeServlet</servlet-name>
+    <servlet-class>com.picalti.interfaces.AddSoldeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddSoldeServlet</servlet-name>
+    <url-pattern>/AddSoldeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ConfirmSoldeServlet</display-name>
+    <servlet-name>ConfirmSoldeServlet</servlet-name>
+    <servlet-class>com.picalti.interfaces.ConfirmSoldeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConfirmSoldeServlet</servlet-name>
+    <url-pattern>/ConfirmSoldeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetLocationByUser</display-name>
+    <servlet-name>GetLocationByUser</servlet-name>
+    <servlet-class>com.picalti.interfaces.GetLocationByUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetLocationByUser</servlet-name>
+    <url-pattern>/GetLocationByUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetLocationsByBike</display-name>
+    <servlet-name>GetLocationsByBike</servlet-name>
+    <servlet-class>com.picalti.interfaces.GetLocationsByBike</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetLocationsByBike</servlet-name>
+    <url-pattern>/GetLocationsByBike</url-pattern>
+  </servlet-mapping>
 </web-app>

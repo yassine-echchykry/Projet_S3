@@ -46,7 +46,7 @@ public class BikeDAOImpl implements BikeDAO {
     }
 
     @Override
-    public BikeBean findById(Long id) throws DAOException {
+    public BikeBean findById(int id) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -172,6 +172,9 @@ public class BikeDAOImpl implements BikeDAO {
         bikeBean.setDescription(resultSet.getString("Description"));
         bikeBean.setImagePath(resultSet.getString("Image_path"));
         bikeBean.setOwnerId(resultSet.getInt("Owner_Id"));
+        bikeBean.setType(resultSet.getString("Type"));
+        bikeBean.setSpeed(resultSet.getInt("Speed"));
+        bikeBean.setStation(resultSet.getString("Station"));
         return bikeBean;
     }
     private static PreparedStatement initRequestPrepare(Connection connexion, String sql, Object... objects) throws SQLException {

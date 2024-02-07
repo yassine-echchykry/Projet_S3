@@ -53,7 +53,6 @@ public class UserDAOImpl implements userDAO {
  	UserBean bean = new UserBean();
  	
  	bean.setId(res.getInt("id"));
- 	bean.setFullName(res.getString("name"));
  	
  	bean.setEmail(res.getString("email"));
  	
@@ -62,7 +61,7 @@ public class UserDAOImpl implements userDAO {
  
  public UserBean login(String email, String password) throws SQLException {
  	Connection conn = daoFactory.getConnection();
- 	String SQL = "SELECT * FROM users WHERE email = ? AND password = ?;";
+ 	String SQL = "SELECT * FROM user WHERE email = ? AND password = ?;";
  	PreparedStatement statement = conn.prepareStatement(SQL);
  	
  	statement.setString(1, email);

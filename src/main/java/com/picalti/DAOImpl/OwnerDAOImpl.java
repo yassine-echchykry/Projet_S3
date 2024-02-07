@@ -11,6 +11,7 @@ import com.JDBC.DAO.DAOException;
 import com.JDBC.DAO.DAOFactory;
 import com.picalti.DAO.OwnerDAO;
 import com.picalti.beans.OwnerBean;
+import com.picalti.beans.UserBean;
 
 public class OwnerDAOImpl implements OwnerDAO {
 
@@ -21,27 +22,57 @@ public class OwnerDAOImpl implements OwnerDAO {
     }
 
     @Override
-    public void create(OwnerBean owner) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+    public void register(String fullName, String cin, Integer age, String sexe, String email, String password, String tele) throws SQLException {
+        Connection connexion = daoFactory.getConnection();
+        String SQL = "INSERT INTO owner (Full_name, CIN, Age, Sexe, Email, Password, Tele) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = connexion.prepareStatement(SQL);
+
+        statement.setString(1, fullName);
+        statement.setString(2, cin);
+        statement.setInt(3, age);  // Use setInt instead of setString for Integer
+        statement.setString(4, sexe);
+        statement.setString(5, email);
+        statement.setString(6, password);
+        statement.setString(7, tele);
 
         try {
-            connexion = daoFactory.getConnection();
-            String sql = "INSERT INTO Owner (Full_name, CIN, Age, Sexe, Email, Password, Tele) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            preparedStatement = initRequestPrepare(connexion, sql,
-                    owner.getFullName(), owner.getCin(), owner.getAge(), owner.getSexe(), owner.getEmail(),
-                    owner.getPassword(), owner.getTele());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
+            statement.execute();
         } finally {
-            // ClosingAll(preparedStatement, connexion);
+            statement.close();
+            connexion.close();
         }
+    }
+    
+    private static UserBean getBean(ResultSet res) throws SQLException {
+    	UserBean bean = new UserBean();
+    	
+    	bean.setId(res.getInt("id"));
+    	
+    	bean.setEmail(res.getString("email"));
+    	
+    	return bean;
+    }
+    
+    public UserBean login(String email, String password) throws SQLException {
+    	Connection conn = daoFactory.getConnection();
+    	String SQL = "SELECT * FROM owner WHERE email = ? AND password = ?;";
+    	PreparedStatement statement = conn.prepareStatement(SQL);
+    	
+    	statement.setString(1, email);
+    	statement.setString(2, password);
+    	
+    	ResultSet res = statement.executeQuery();
+    	UserBean bean = res.next() ? getBean(res) : null;
+    	
+    	res.close();
+    	statement.close();
+    	conn.close();
+    	
+    	return bean;
     }
 
     @Override
-    public OwnerBean findById(Long id) throws DAOException {
+    public OwnerBean findById(int id) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -119,7 +150,7 @@ public class OwnerDAOImpl implements OwnerDAO {
     public void update(OwnerBean owner) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
-
+    
         try {
             connexion = daoFactory.getConnection();
             String sql = "UPDATE Owner SET Full_name=?, CIN=?, Age=?, Sexe=?, Email=?, Password=?, Tele=? WHERE Id=?";
@@ -158,7 +189,7 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     private static OwnerBean map(ResultSet resultSet) throws SQLException {
         OwnerBean ownerBean = new OwnerBean();
-        ownerBean.setId(resultSet.getLong("Id"));
+        ownerBean.setId(resultSet.getInt("Id"));
         ownerBean.setFullName(resultSet.getString("Full_name"));
         ownerBean.setCin(resultSet.getString("CIN"));
         ownerBean.setAge(resultSet.getInt("Age"));

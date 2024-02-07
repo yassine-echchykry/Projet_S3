@@ -35,33 +35,42 @@ public class Session_DAO_Impl implements Session_DAO {
             e.printStackTrace();}
        
     }
+ // ...
+
     @Override
-    public String getUsernameByToken(String token) {
+    public UserBean getUserByToken(String token) {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-
+        
         try {
             conn = daoFactory.getConnection();
-            String SQL = "SELECT users.name AS username " +
+            String SQL = "SELECT user.Id AS userid, user.Full_name AS username, user.CIN AS usercin, user.Age AS userage, user.Sexe AS usersexe, user.Email AS useremail, user.Password AS userpass, user.Tele AS usertele " +
                     "FROM session " +
-                    "JOIN users ON session.user_id = users.id " +
-                    "WHERE session.token = ?";
-            statement = conn.prepareStatement(SQL);
-
-            statement.setString(1, token);
+                    "JOIN user ON session.user_id = user.Id " +
+                    "WHERE session.token = ? ";
+            statement = initRequestPrepare(conn, SQL, token.trim());
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                // Return the username directly
-                return resultSet.getString("username");
+            if (resultSet.next()) 	
+            {
+                // Map the ResultSet to a UserBean
+                UserBean userBean = new UserBean();
+                userBean.setId(resultSet.getInt("userid"));
+                userBean.setFullName(resultSet.getString("username"));
+                userBean.setCin(resultSet.getString("usercin"));
+                userBean.setAge(resultSet.getInt("userage"));
+                userBean.setSexe(resultSet.getString("usersexe"));
+                userBean.setEmail(resultSet.getString("useremail"));
+                userBean.setPassword(resultSet.getString("userpass"));
+                userBean.setTele(resultSet.getString("usertele"));
+                System.out.println("User found with token: " + token);
+                return userBean;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Close resources (Connection, PreparedStatement, ResultSet) in the finally block
-            // to ensure they are always closed, even if an exception occurs.
-            // Note: You might want to handle these exceptions more gracefully in a production environment.
+            // Close resources in the finally block
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
@@ -70,47 +79,16 @@ public class Session_DAO_Impl implements Session_DAO {
                 e.printStackTrace();
             }
         }
-
+        System.out.println("No user found with token: " + token);
         return null; // Return null if no session found with the given token
     }
-    
-    
-    @Override
-    public String getUserIdByToken(String token) {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
-        try {
-            conn = daoFactory.getConnection();
-            String SQL = "SELECT user_id AS userid " +
-                    "FROM session " +
-                    
-                    "WHERE session.token = ?";
-            statement = conn.prepareStatement(SQL);
-
-            statement.setString(1, token);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                // Return the username directly
-                return resultSet.getString("userid");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources (Connection, PreparedStatement, ResultSet) in the finally block
-            // to ensure they are always closed, even if an exception occurs.
-            // Note: You might want to handle these exceptions more gracefully in a production environment.
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    private static PreparedStatement initRequestPrepare(Connection connexion, String sql, Object... objects) throws SQLException {
+        PreparedStatement preparedStatement = connexion.prepareStatement(sql);
+        for (int i = 0; i < objects.length; i++) {
+            preparedStatement.setObject(i + 1, objects[i]);
         }
-
-        return null; // Return null if no session found with the given token
+        return preparedStatement;
     }
+    // ...
 }

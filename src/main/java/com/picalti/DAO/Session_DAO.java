@@ -2,9 +2,9 @@
 package com.picalti.DAO;
 
 import com.picalti.beans.Session_Bean;
+import com.picalti.beans.UserBean;
 
 public interface Session_DAO {
     void insertSession(Session_Bean sessionBean);
-    String getUsernameByToken(String token);
-    String getUserIdByToken(String token);
+    UserBean getUserByToken(String token);
 }
